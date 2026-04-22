@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>韓国語フリートーク パートナー募集</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1412;
+      --paper: #faf7f2;
+      --cream: #f0ebe0;
+      --red: #c0392b;
+      --gold: #b8860b;
+      --muted: #6b5f52;
+      --border: #d4c9b8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.85rem; letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 8rem 3rem 4rem 10vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute; right: -2vw; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: clamp(120px, 18vw, 280px);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0;
+      animation: fadeSlideRight 1.2s 0.3s ease forwards;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 0.3em 0.8em;
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.8s 0.4s ease forwards;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 6rem);
+      line-height: 1.1;
+      max-width: 700px;
+      opacity: 0; animation: fadeUp 0.8s 0.6s ease forwards;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--red);
+    }
+    .hero-sub {
+      margin-top: 1.5rem;
+      max-width: 480px;
+      color: var(--muted);
+      font-size: 1rem;
+      opacity: 0; animation: fadeUp 0.8s 0.8s ease forwards;
+    }
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.8s 1s ease forwards;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.85em 2em;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.9rem; letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--ink); color: var(--paper);
+    }
+    .btn-primary:hover { background: var(--red); }
+    .btn-outline {
+      background: transparent; color: var(--ink);
+      border: 1px solid var(--ink);
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+    /* decorative line */
+    .hero-line {
+      position: absolute; bottom: 3rem; left: 10vw;
+      width: 60px; height: 1px;
+      background: var(--red);
+      opacity: 0; animation: scaleX 0.6s 1.2s ease forwards;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    /* ── SECTION COMMON ── */
+    section { position: relative; z-index: 1; }
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 3rem;
+    }
+    .section-label {
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .divider {
+      width: 40px; height: 2px;
+      background: var(--red); margin: 1.5rem 0;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--cream); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-korean {
+      text-align: center;
+    }
+    .korean-word {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+      display: block;
+    }
+    .korean-word span { color: var(--red); }
+    .korean-caption {
+      margin-top: 0.5rem;
+      font-size: 0.8rem; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem; margin-top: 3rem;
+    }
+    .feature-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      background: var(--paper);
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .feature-card:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+    }
+    .feature-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3rem; color: var(--border);
+      line-height: 1; margin-bottom: 0.8rem;
+    }
+    .feature-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── PROFILE ── */
+    #profile { background: var(--ink); color: var(--paper); }
+    #profile .section-label { color: var(--gold); }
+    #profile .section-title { color: var(--paper); }
+    #profile .divider { background: var(--gold); }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3rem; align-items: start;
+      margin-top: 3rem;
+    }
+    .profile-avatar {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--red));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 3rem; color: var(--paper);
+      flex-shrink: 0;
+    }
+    .profile-info p {
+      color: #b0a898; font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .profile-tag {
+      padding: 0.3em 0.9em;
+      border: 1px solid #3a342c;
+      color: #b0a898; font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--paper); }
+    .contact-wrapper {
+      max-width: 600px;
+    }
+    .contact-note {
+      color: var(--muted); font-size: 0.88rem;
+      margin-bottom: 2rem;
+      padding: 1rem 1.2rem;
+      border-left: 3px solid var(--red);
+      background: var(--cream);
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label {
+      display: block;
+      font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 0.85em 1em;
+      border: 1px solid var(--border);
+      background: var(--paper);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.95rem; color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--red);
+    }
+    .form-textarea { resize: vertical; min-height: 140px; }
+    .form-hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+    .form-submit { width: 100%; margin-top: 0.5rem; font-size: 1rem; }
+    #form-success {
+      display: none;
+      padding: 1.2rem;
+      background: #eaf7ee;
+      border: 1px solid #a8d5b5;
+      color: #2d6a4f;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: #6b5f52;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.8rem; letter-spacing: 0.05em;
+    }
+    footer span { color: var(--red); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideRight {
+      from { opacity: 0; transform: translateY(-50%) translateX(40px); }
+      to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+    @keyframes scaleX {
+      to { opacity: 1; transform: scaleX(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .profile-grid { grid-template-columns: 1fr; }
+      .profile-avatar { margin: 0 auto; }
+      .section-inner { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">한국어 <span>Talk</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">このサイトについて</a></li>
+    <li><a href="#features">特徴</a></li>
+    <li><a href="#profile">プロフィール</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text">말해요</div>
+  <div class="hero-tag">Korean Free Talk</div>
+  <h1>韓国語で、<br><em>自由に</em>話そう。</h1>
+  <p class="hero-sub">
+    レベル・年齢不問。一緒に韓国語でフリートークしてくれるパートナーを探しています。
+    まずは気軽にご連絡ください。
+  </p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">お問い合わせ・応募する</a>
+    <a href="#about" class="btn btn-outline">詳しく見る</a>
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label">About</p>
+        <h2 class="section-title">このサイトに<br>ついて</h2>
+        <div class="divider"></div>
+        <p>
+          韓国語を学んでいる方・韓国に興味がある方・もっと会話を練習したい方に向けて、
+          フリートーク相手を募集しています。
+        </p>
+        <p>
+          日常会話から趣味の話まで、テーマは自由です。
+          オンライン（ZoomやLINE通話など）で実施予定です。
+        </p>
+        <p>
+          初心者の方も大歓迎です。一緒に楽しく話しましょう！
+        </p>
+      </div>
+      <div class="about-korean">
+        <span class="korean-word">자유<span>롭게</span></span>
+        <p class="korean-caption">自由に — freely</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-inner">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">こんな方に<br>おすすめです</h2>
+    <div class="divider"></div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-num">01</div>
+        <h3>初心者歓迎</h3>
+        <p>ハングルを覚えたばかりの方も大丈夫。ゆっくり丁寧にお話します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">02</div>
+        <h3>テーマ自由</h3>
+        <p>ドラマ・K-POP・料理・旅行など、好きな話題でOKです。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">03</div>
+        <h3>オンライン完結</h3>
+        <p>ZoomやLINEなど、ご都合に合わせたツールで対応します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">04</div>
+        <h3>時間は相談可</h3>
+        <p>平日・週末、朝・夜など、スケジュールはご相談ください。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">05</div>
+        <h3>無料でOK</h3>
+        <p>純粋に「話したい」という気持ちを大切にしています。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">06</div>
+        <h3>継続サポート</h3>
+        <p>一回限りでも、定期的に続けたい方も、どちらも歓迎です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile">
+  <div class="section-inner">
+    <p class="section-label">Profile</p>
+    <h2 class="section-title">プロフィール</h2>
+    <div class="divider"></div>
+    <div class="profile-grid">
+      <div class="profile-avatar">한</div>
+      <div class="profile-info">
+        <p>
+          広島在住。韓国語学習歴〇〇年。韓国文化・音楽・食が大好きで、
+          現地に何度も訪れた経験があります。
+        </p>
+        <p>
+          日本語ネイティブ、韓国語中〜上級レベル。
+          お互いに楽しく話せる時間を作れたら嬉しいです。
+        </p>
+        <p>
+          ※ プロフィール内容はサンプルです。実際の内容に書き換えてください。
+        </p>
+        <div class="profile-tags">
+          <span class="profile-tag">K-POP好き</span>
+          <span class="profile-tag">韓国ドラマ</span>
+          <span class="profile-tag">韓国料理</span>
+          <span class="profile-tag">旅行経験あり</span>
+          <span class="profile-tag">オンライン対応</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">お問い合わせ・<br>応募フォーム</h2>
+    <div class="divider"></div>
+    <div class="contact-wrapper">
+      <div class="contact-note">
+        📌 このフォームはサンプルです。実際に公開する際は
+        <strong>Formspree</strong>（無料）と連携することで、
+        入力内容があなたのメールに届くようになります。
+      </div>
+
+      <!-- Formspree連携時: action属性を "https://formspree.io/f/YOUR_ID" に変更 -->
+      <form id="contact-form">
+        <div class="form-group">
+          <label class="form-label" for="name">お名前（ニックネーム可）</label>
+          <input class="form-input" type="text" id="name" name="name" placeholder="例：田中 / タナカ" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">メールアドレス</label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="example@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="level">韓国語レベル</label>
+          <select class="form-select" id="level" name="level">
+            <option value="">選択してください</option>
+            <option>完全初心者（ハングル未学習）</option>
+            <option>初級（ハングル読める）</option>
+            <option>中級（日常会話できる）</option>
+            <option>上級（ほぼ不自由なし）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">メッセージ・ご希望など</label>
+          <textarea class="form-textarea" id="message" name="message"
+            placeholder="例：週1回30分ほど話したいです。K-POPが好きでその話題で話したいです。"></textarea>
+          <p class="form-hint">希望の頻度・時間帯・話したいテーマなどを書いていただけると嬉しいです。</p>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">送信する →</button>
+        <div id="form-success">✅ 送信ありがとうございます！近日中にご連絡します。</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 한국어 <span>Talk</span> — 韓国語フリートーク募集サイト</p>
+</footer>
+
+<script>
+  // Demo form submit (Formspree連携前のサンプル動作)
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    this.reset();
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'none';
+    }, 5000);
+  });
+
+  // Scroll-in animation for cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = (i * 0.08) + 's';
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.feature-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = '.feature-card.visible { opacity: 1 !important; transform: translateY(0) !important; }';
+  document.head.appendChild(style);
+</script>
+</body>
+</html>
