@@ -511,16 +511,6 @@
 </footer>
 
 <script>
-  // Demo form submit (Formspree連携前のサンプル動作)
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('form-success').style.display = 'block';
-    this.reset();
-    setTimeout(() => {
-      document.getElementById('form-success').style.display = 'none';
-    }, 5000);
-  });
-
   // Scroll-in animation for cards
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
